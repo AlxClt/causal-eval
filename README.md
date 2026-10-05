@@ -2,6 +2,12 @@
 
 Tools to evaluate propensity models used for causal inference on observational data. This package implements the ideas of [Shimoni et al., *An Evaluation Toolkit to Guide Model Selection and Cohort Definition in Causal Inference* (2019)](https://arxiv.org/abs/1906.00442), which evaluates these observable properties: covariate balance before and after weighting, calibration, propensity overlap, and ROC curves adapted to propensity models (IP-weighted and expected ROC curves).
 
+<br>
+<p align="center">
+  <img src="img/propensity_evaluation_logistic.png" alt="Evaluation of a propensity model: covariate balance, calibration, propensity distribution and ROC curves" width="60%">
+</p>
+<br>
+
 A propensity model estimates the probability of receiving a treatment given the covariates, P(T=1 | X). The model in itself is not directly used, but its predictions are used downstream often as inverse propensity weights, to remove confounding and estimate a treatment effect.
 
 By definition, propensity models cannot be selected on predictive metrics: the true propensity is never observed, and neither is the causal effect. Causal inference relies on the positivity assumption (among others): for every profile of covariates, individuals must have a non-zero probability of being treated and of not being treated, so that treated and untreated individuals overlap and can be compared. A model that separates treated and control very well signals a lack of overlap. This can be a real feature of the data, calling for a narrower cohort definition, or a modeling flaw (overfitting, or variables that predict treatment but not outcome). Therefore, a better AUC (or accuracy, F1 score...) does not mean a better propensity model. On the contrary, it can be a warning sign. But a low AUC does not validate the model either: it says nothing about unmeasured confounders. In a randomized experiment, the best possible propensity model has an AUC of 0.5.
@@ -75,7 +81,6 @@ The confounder plots show where the imbalance comes from: the distribution of ea
   <img src="img/confounder_distributions.png" alt="Distribution of age, education and smoking intensity in the control and treated groups" width="49%">
   <img src="img/confounding_evidence_logistic.png" alt="Predicted propensity by age decile, education level and smoking intensity decile" width="49%">
 </p>
-
 
 The demo downloads the data with [`causaldata`](https://pypi.org/project/causaldata/), which is not a dependency of `causaleval`. To run it:
 
