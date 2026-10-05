@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "causaleval"
+version = "0.1.0"
+description = "Tools to evaluate propensity models in the context of causal inference"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "scikit-learn",
+    "plotly>=5.15",
+]
+
+[tool.setuptools]
+packages = ["causaleval"]
