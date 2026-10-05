@@ -4,7 +4,7 @@ Tools to evaluate propensity models used for causal inference on observational d
 
 <br>
 <p align="center">
-  <img src="img/propensity_evaluation_logistic.png" alt="Evaluation of a propensity model: covariate balance, calibration, propensity distribution and ROC curves" width="60%">
+  <img src="img/propensity_evaluation_logistic.png" alt="Evaluation of a propensity model: covariate balance, calibration, propensity distribution and ROC curves" width="75%">
 </p>
 <br>
 
