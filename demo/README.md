@@ -10,7 +10,7 @@ NHEFS (National Health and Nutrition Examination Survey Epidemiologic Follow-up 
 - outcome: `wt82_71`, weight change in kg
 - covariates: sex, race, age, education, smoking intensity and years, exercise, activity, baseline weight
 
-The data is downloaded with the [`causaldata`](https://pypi.org/project/causaldata/) package. It is only needed for the demo and is **not** a dependency of `causaleval`.
+The data is downloaded with the [`causaldata`](https://pypi.org/project/causaldata/) package, which must be manually installed as it is not a dependency of `causaleval`
 
 ## Training
 
@@ -18,9 +18,11 @@ Three models (scikit-learn pipelines: one-hot encoding of categoricals, scaling 
 
 - `logistic`: logistic regression
 - `random_forest`: random forest
-- `calibrated_random_forest`: the same random forest wrapped in `CalibratedClassifierCV(method="sigmoid", cv=5)`. The calibration is fitted with an inner cross-validation on each training fold only, so the evaluation stays out-of-sample. Sigmoid (Platt) is preferred to isotonic at this sample size: isotonic overfits and can output propensities of exactly 0 or 1 (infinite weights).
+- `calibrated_random_forest`: random forest wrapped in `CalibratedClassifierCV(method="sigmoid", cv=5)`. The calibration is fitted with an inner cross-validation on each training fold only, so the evaluation stays out-of-sample.
 
-For each fold, ROC AUC, accuracy, F1, precision, recall and Brier score are recorded on the held-out data.
+Note that for the calibraion, sigmoid (Platt) is preferred to isotonic at this sample size: isotonic tends to overfit on small datasets
+
+For each fold, ROC AUC, accuracy, F1, precision, recall and Brier score are recorded on the held-out data as informative metrics.
 
 `train_propensity_model` returns a `PropensityResult` with:
 
@@ -41,14 +43,12 @@ For each fold, ROC AUC, accuracy, F1, precision, recall and Brier score are reco
 
 Each panel is also available on its own: `plot_standardized_differences`, `plot_calibration_curves`, `plot_propensity_distribution`, `plot_roc_curves`, `plot_metrics_summary`. The table values are computed by `summarize_fold_metrics` in [utils.py](utils.py), which is part of the demo, not of the package.
 
-Calibration is judged with these diagnostics, not with the Brier score alone. Keep it only if the weighted standardized differences go down, the IP-weighted AUC moves towards 0.5, the model's ROC curve moves towards the expected one, and the largest weight doesn't increase.
-
 ### Confounders
 
 Also saved in `demo/plots/`:
 
-- `confounder_distributions.html`: distribution of each covariate in the control and treated groups (`plot_confounder_distributions`). It doesn't depend on the model. Differences between the two groups show which covariates are imbalanced before weighting.
-- `confounding_evidence_<model>.html`: predicted propensity by category, or by decile for continuous covariates (`plot_confounding_evidence`). A trend across categories shows the covariate drives treatment, i.e. it is a candidate confounder (e.g. older people are more likely to quit smoking).
+- `confounder_distributions.html`: distribution of each covariate in the control and treated groups (`plot_confounder_distributions`).
+- `confounding_evidence_<model>.html`: predicted propensity by category, or by decile for continuous covariates (`plot_confounding_evidence`). A trend across categories shows that the covariate drives treatment, so that it is a candidate confounder.
 
 ## Run
 

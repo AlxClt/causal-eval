@@ -52,7 +52,7 @@ Plot functions take a pandas DataFrame and column names, and return plotly figur
 | `plot_roc_curves` | ROC curves of the propensity model: the model's own curve should be close to the *expected* curve (the one implied by the predicted propensities), and the *IP-weighted* curve close to the diagonal (the weighted data looks randomized) |
 | `plot_metrics_summary` | Table of out-of-sample metrics with confidence intervals |
 | `plot_confounding_evidence` | Predicted propensity by category, or by quantile for continuous covariates. A trend shows that the covariate drives treatment, i.e. is a candidate confounder |
-| `plot_confounder_distributions` | Distribution of each covariate in the control and treated groups |
+| `plot_confounder_distributions` | Distribution of each covariate in the control and treated groups. Can be used as an exploratory analysis step before training a model |
 
 The values behind the balance and ROC plots are also available, to report them or build custom plots:
 
