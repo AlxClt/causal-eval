@@ -348,6 +348,10 @@ def plot_propensity_evaluation(data, continuous, categoricals, treatment='treate
     if metrics_summary is not None:
         fig.add_trace(_metrics_table_trace(metrics_summary, ci_label), row=3, col=1)
 
+    # a plain string title is shown centered and in bold
+    if isinstance(layout_kwargs.get('title'), str):
+        layout_kwargs['title'] = dict(text=f"<b>{layout_kwargs['title']}</b>", x=0.5, xanchor='center')
+
     fig.update_layout(barmode='overlay', height=height, width=1200, **layout_kwargs)
     return fig
 
@@ -391,9 +395,12 @@ def round_to_right_digit(x, floating_numbers=2):
 def plot_confounding_evidence(data, propensity_col, confounder, categorical=True, bins=10):
     data = data.copy()
     if categorical:
-        fig = px.box(data, x=f'{confounder}', y=propensity_col,
-                     category_orders={confounder: sorted(data[confounder].dropna().unique())})
+        # categories as strings so that numeric codes get discrete colors, ordered by their original values
+        order = [str(v) for v in sorted(data[confounder].dropna().unique())]
+        data[confounder] = data[confounder].astype(str)
+        fig = px.box(data, x=confounder, y=propensity_col, color=confounder, category_orders={confounder: order})
         fig.update_xaxes(type='category')
+        fig.update_layout(showlegend=False)
 
     else:
         cuts, edges = pd.qcut(data[confounder], bins, retbins=True, labels=False, duplicates='drop')
