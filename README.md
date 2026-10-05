@@ -58,9 +58,17 @@ The values behind the balance and ROC plots are also available, to report them o
 
 The evaluation plots of each model, and the confounder plots, are saved in `demo/plots/`. The logistic regression evaluation:
 
-![Evaluation of the logistic regression propensity model on NHEFS](demo/plots/propensity_evaluation_logistic.png)
+![Evaluation of the logistic regression propensity model on NHEFS](img/propensity_evaluation_logistic.png)
 
 Weighting brings all covariates below the 0.1 threshold (A), the model is reasonably calibrated (B), and treated and control overlap well (C). The modest AUC (about 0.62) is expected: quitting smoking depends only partly on the measured covariates. The IP-weighted AUC slightly below 0.5 (D) indicates that the weights slightly overcorrect.
+
+The confounder plots show where the imbalance comes from: the distribution of each covariate in the control and treated groups (left, `plot_confounder_distributions`), and the predicted propensity across its categories or deciles (right, `plot_confounding_evidence`). The images below are truncated to three covariates; the demo's plots cover all of them. Patients who quit are older, more often in the highest education level, and smoked less: the propensity to quit rises with age and falls with smoking intensity.
+
+<p>
+  <img src="img/confounder_distributions.png" alt="Distribution of age, education and smoking intensity in the control and treated groups" width="49%">
+  <img src="img/confounding_evidence_logistic.png" alt="Predicted propensity by age decile, education level and smoking intensity decile" width="49%">
+</p>
+
 
 The demo downloads the data with [`causaldata`](https://pypi.org/project/causaldata/), which is not a dependency of `causaleval`. To run it:
 
