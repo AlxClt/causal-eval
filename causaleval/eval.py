@@ -47,8 +47,8 @@ def standardized_difference(data, confounder, treatment, weights=None, mode=None
             mode ='continuous'
 
 
-    df_treated = df.loc[df[treatment] == 1]
-    df_control = df.loc[df[treatment] == 0]
+    df_treated = df.loc[df[treatment] == 1].copy()
+    df_control = df.loc[df[treatment] == 0].copy()
 
     if handle_nan == 'drop':
         df_treated = df_treated.dropna(how='any', subset=[confounder ,],  axis=0)
@@ -59,10 +59,8 @@ def standardized_difference(data, confounder, treatment, weights=None, mode=None
     if handle_nan == 'fill':
         if mode == 'continuous':
             warnings.warn('Imputing missing values for continuious confounder using the within treatment group mean')
-            mean_t = df_treated[confounder].average()
-            mean_c = df_control[confounder].average()
-            df.loc[(df[treatment ]==1) & (pd.isna(df[confounder])), confounder] = mean_t
-            df.loc[(df[treatment ]==0) & (pd.isna(df[confounder])), confounder] = mean_c
+            df_treated[confounder] = df_treated[confounder].fillna(df_treated[confounder].mean())
+            df_control[confounder] = df_control[confounder].fillna(df_control[confounder].mean())
         else:
             df_treated[confounder] = df_treated[confounder].fillna('Nan_(filled)')
             df_control[confounder] = df_control[confounder].fillna('Nan_(filled)')

@@ -14,6 +14,13 @@ This package helps evaluating what the propensities do (covariate balance after 
 pip install git+https://github.com/AlxClt/causal-eval
 ```
 
+To run the tests from a clone:
+
+```bash
+pip install -e ".[test]"
+pytest
+```
+
 ## Usage
 
 ```python
